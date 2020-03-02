@@ -1,0 +1,22 @@
+{
+  "name": "interactive-svg",
+  "version": "1.0.0",
+  "description": "Homework#3: Interactive SVG for advance web engineering",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AustinD14/Interactive-SVG.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AustinD14/Interactive-SVG/issues"
+  },
+  "homepage": "https://github.com/AustinD14/Interactive-SVG#readme",
+  "dependencies": {
+    "d3": "^5.15.0"
+  }
+}
