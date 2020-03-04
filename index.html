@@ -54,7 +54,6 @@ rect {
 </style>
 <body>
 
-<!-- <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script>
 
@@ -67,7 +66,6 @@ var parseDate = d3.time.format("%b %Y").parse;
 var bisectDate = d3.bisector(function(d) { return d.date; }).left,
     formatValue = d3.format(".2"),
     formatCurrency = function(d) { return formatValue(d) + "%"; };
-
 
 var x = d3.time.scale()
     .range([0, width]);
