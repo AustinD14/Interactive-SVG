@@ -1,22 +1,4 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  <script src="https://d3js.org/d3.v5.js"></script>
-  <link href="style.css" rel="stylesheet" type="text/css">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>SVG</title>
-</head >
-<body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    <script src="app.js"></script>
-	<button id="start">Start Time Animation</button>
-	<button id="#reset">Reset</button>
-</body>
-</html> -->
-
 <!DOCTYPE html>
-<html>
 <meta charset="utf-8">
 <style>
 
@@ -41,20 +23,20 @@ body {
   stroke-width: 1.5px;
 }
 
-rect {
-    width: 630;
-    height: 275;
-}
-
 .overlay {
-    fill: none;
-    pointer-events: all;
+  fill: none;
+  pointer-events: all;
 }
 
+.focus circle {
+  fill: none;
+  stroke: steelblue;
+}
 </style>
 <body>
-
-<!-- <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script> -->
+  <button id="start" style="position: absolute; margin-left: 6px; margin-top: 6px;">Start Time Animation</button>
+  <button id="reset" style="position: absolute; margin-left: 150px; margin-top: 6px">Reset</button>
+  <p style="position: absolute; margin-left: 212px; margin-top: 12px; text-size: 12px">Start animation, then hover over line to see percentages after line is drawn.</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script>
 
@@ -62,12 +44,11 @@ var margin = {top: 60, right: 20, bottom: 30, left: 50},
     width = 700 - margin.left - margin.right,
     height = 365 - margin.top - margin.bottom;
 
-var parseDate = d3.time.format("%b %Y").parse;
-
-var bisectDate = d3.bisector(function(d) { return d.date; }).left,
-    formatValue = d3.format(".2"),
+// Adjust parsing of data to properly show tooltip
+var parseDate = d3.time.format("%b %Y").parse,
+    bisectDate = d3.bisector(function(d) { return d.date; }).left,
+    formatValue = d3.format(",.2f"),
     formatCurrency = function(d) { return formatValue(d) + "%"; };
-
 
 var x = d3.time.scale()
     .range([0, width]);
@@ -93,7 +74,7 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("./unemployment_2005_2015.csv", function(error, data) {
+d3.csv("data/unemployment_2005_2015.csv", function(error, data) {
   if (error) throw error;
   console.log(data);
 
@@ -120,6 +101,7 @@ d3.csv("./unemployment_2005_2015.csv", function(error, data) {
       .style("text-anchor", "end")
       .text("Unemployment Rate (%)");
 
+  // Start Animation on Click
   d3.select("#start").on("click", function() {
     var path = svg.append("path")
         .datum(data)
@@ -133,7 +115,7 @@ d3.csv("./unemployment_2005_2015.csv", function(error, data) {
     path
       .attr("stroke-dasharray", totalLength + " " + totalLength)
       .attr("stroke-dashoffset", totalLength)
-      .transition() // Call Transition Method
+     .transition() // Call Transition Method
       .duration(4000) // Set Duration timing (ms)
       .ease("linear") // Set Easing option
       .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
@@ -172,19 +154,12 @@ d3.csv("./unemployment_2005_2015.csv", function(error, data) {
       focus.attr("transform", "translate(" + x(d.date) + "," + y(d.rate) + ")");
       focus.select("text").text(formatCurrency(d.rate));
     }
-    
   });
 
+  // Reset Animation
   d3.select("#reset").on("click", function() {
-    d3.select("path.line").remove();
+    d3.select(".line").remove();
   });
-
 });
 
-
 </script>
-
-<button id="start">Start Time Animation</button>
-<button id="reset">Reset</button>
-</body>
-
