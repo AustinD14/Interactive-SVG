@@ -1,19 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  <script src="https://d3js.org/d3.v5.js"></script>
-  <link href="style.css" rel="stylesheet" type="text/css">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>SVG</title>
-</head >
-<body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    <script src="app.js"></script>
-	<button id="start">Start Time Animation</button>
-	<button id="#reset">Reset</button>
-</body>
-</html> -->
 
 <!DOCTYPE html>
 <html>
@@ -78,12 +62,6 @@ var parseDate = d3.time.format("%b %Y").parse;
 var bisectDate = d3.bisector(function(d) { return d.date; }).left,
     formatValue = d3.format(".2"),
     formatCurrency = function(d) { return formatValue(d) + "%"; };
-
-// var x = d3.time.scale()
-//     .range([0, width]);
-
-// var y = d3.scale.linear()
-//     .range([height, 0]);
 
 // BRUSH
 var x = d3.time.scale().range([0, width]),
@@ -150,34 +128,28 @@ d3.csv("./unemployment_2005_2019.csv", function(error, data) {
         .attr("class", "line")
         .attr("d", line);
 
-    // Variable to Hold Total Length
     var totalLength = path.node().getTotalLength();
 
-    // Set Properties of Dash Array and Dash Offset and initiate Transition
     path
       .attr("stroke-dasharray", totalLength + " " + totalLength)
       .attr("stroke-dashoffset", totalLength)
-      .transition() // Call Transition Method
-      .duration(4000) // Set Duration timing (ms)
-      .ease("linear") // Set Easing option
-      .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
+      .transition() 
+      .duration(4000) 
+      .ease("linear") 
+      .attr("stroke-dashoffset", 0);
 
-    // Create SVG for Tooltip and Circle on Mouseover
+
     var focus = svg.append("g")
         .attr("class", "focus")
         .style("display", "none");
 
-    // Append a circle to show on Mouseover
     focus.append("circle")
         .attr("r", 4.5);
 
-    // Append text to show on Mouseover
     focus.append("text")
         .attr("x", 9)
         .attr("dy", ".35em");
 
-    // Append overlay rectangle as container for Circle and Tooltips
-    // that allows user to hover anywhere on graphic
     svg.append("rect")
         .attr("class", "overlay")
         .attr("width", width)
@@ -186,7 +158,6 @@ d3.csv("./unemployment_2005_2019.csv", function(error, data) {
         .on("mouseout", function() { focus.style("display", "none"); })
         .on("mousemove", mousemove);
 
-    // Mousemove function that sets location and changes properties of Focus SVG
     function mousemove() {
       var x0 = x.invert(d3.mouse(this)[0]),
           i = bisectDate(data, x0, 1),
@@ -204,12 +175,7 @@ d3.csv("./unemployment_2005_2019.csv", function(error, data) {
   });
 
 });
-
-
-
 </script>
-
 <button id="start">Start Time Animation</button>
 <button id="reset">Reset</button>
 </body>
-
