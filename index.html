@@ -31,10 +31,6 @@ body {
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-  display: none;
-}
-
 .line {
   fill: none;
   stroke: steelblue;
@@ -51,6 +47,18 @@ rect {
     pointer-events: all;
 }
 
+/* BRUSH */
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.area {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+
 </style>
 <body>
 
@@ -60,6 +68,10 @@ rect {
 var margin = {top: 60, right: 20, bottom: 30, left: 50},
     width = 700 - margin.left - margin.right,
     height = 365 - margin.top - margin.bottom;
+    
+var margin2 = {top: 330, right: 40, bottom: 20, left: 40},
+    height2 = 700 - margin2.top - margin2.bottom;
+
 
 var parseDate = d3.time.format("%b %Y").parse;
 
@@ -67,15 +79,23 @@ var bisectDate = d3.bisector(function(d) { return d.date; }).left,
     formatValue = d3.format(".2"),
     formatCurrency = function(d) { return formatValue(d) + "%"; };
 
-var x = d3.time.scale()
-    .range([0, width]);
+// var x = d3.time.scale()
+//     .range([0, width]);
 
-var y = d3.scale.linear()
-    .range([height, 0]);
+// var y = d3.scale.linear()
+//     .range([height, 0]);
+
+// BRUSH
+var x = d3.time.scale().range([0, width]),
+      x2 = d3.time.scale().range([0, width]),
+      y = d3.scale.linear().range([height, 0]),
+      y2 = d3.scale.linear().range([height2, 0]);
 
 var xAxis = d3.svg.axis()
     .scale(x)
-    .orient("bottom");
+    .orient("bottom"),
+    xAxis2 = d3.svg.axis().scale(x2).orient("bottom");//brush
+
 
 var yAxis = d3.svg.axis()
     .scale(y)
@@ -91,7 +111,9 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("./unemployment_2005_2015.csv", function(error, data) {
+  
+
+d3.csv("./unemployment_2005_2019.csv", function(error, data) {
   if (error) throw error;
   console.log(data);
 
@@ -102,6 +124,10 @@ d3.csv("./unemployment_2005_2015.csv", function(error, data) {
 
   x.domain(d3.extent(data, function(d) { return d.date; }));
   y.domain(d3.extent(data, function(d) { return d.rate; }));
+
+//brush
+  x2.domain(x.domain());
+  y2.domain(y.domain());
 
   svg.append("g")
       .attr("class", "x axis")
@@ -178,6 +204,7 @@ d3.csv("./unemployment_2005_2015.csv", function(error, data) {
   });
 
 });
+
 
 
 </script>
