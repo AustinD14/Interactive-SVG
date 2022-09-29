@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/AustinD14/Interactive-SVG#readme",
   "dependencies": {
-    "d3": "^5.15.0"
+    "d3": "^7.6.1"
   }
 }
